@@ -44,7 +44,7 @@ btn.addEventListener('click', () => {
     recognition.start();
 })
 function takeCommand(message) {
-    if (message.includes('hey RAJU') || message.includes('hello RAJU')) {
+    if (message.includes('hey') || message.includes('hello')) {
         speak("Hello Sir, How May I Help You?");
     } 
     else if (message.includes("open google")) {
@@ -73,7 +73,7 @@ function takeCommand(message) {
         const finalText = "Today's date is " + date;
         speak(finalText);
     } else if (message.includes('calculator')) {
-        window.open('Calculator:///');
+        window.open('Calculator:EgZjaHJvbWUqEggAEAAYQxiDARixAxiABBiKBTISCAAQABhDGIMBGLEDGIAEGIoFMgYIARBFGDkyDAgCEAAYQxiABBiKBTIMCAMQABhDGIAEGIoFMhIIBBAAGEMYgwEYsQMYgAQYigUyDAgFEAAYQxiABBiKBTIKCAYQABixAxiABDIKCAcQABixAxiABDINCAgQABiDARixAxiABDIKCAkQABixAxiABNIBCDI4MTdqMGo3qAIIsAIB');
         const finalText = "Opening Calculator";
         speak(finalText);
     } else {
