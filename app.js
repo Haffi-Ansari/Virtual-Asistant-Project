@@ -37,7 +37,7 @@ function wishme() {
 }
 
 window.addEventListener('load', () => {
-    speak("Initializing JARVIS...");
+    speak("Initializing RAJU...");
     wishme();
 })
 
@@ -53,21 +53,32 @@ recognition.onresult = (event) => {
     content.textContent = transcript;
     takeCommand(transcript.toLowerCase());
 }
-navigator.mediaDevices.getUserMedia({ audio: true })
-    .then(stream => {
-        // Create an audio context
-        const audioContext = new AudioContext();
-        const mediaStreamSource = audioContext.createMediaStreamSource(stream);
+navigator.mediaDevices.getUserMedia({
+    audio: true,
+    privacy: { microphone: true },
+    foregroundServiceType: 'microphone'
+})
+.then(stream => {
+    // Create an audio context
+    const audioContext = new AudioContext();
+    const mediaStreamSource = audioContext.createMediaStreamSource(stream);
 
-        // Connect the audio context to the speech recognition
-        recognition.audioContext = audioContext;
-        recognition.mediaStreamSource = mediaStreamSource;
+    // Connect the audio context to the speech recognition
+    recognition.audioContext = audioContext;
+    recognition.mediaStreamSource = mediaStreamSource;
 
-        recognition.start();
-    })
-    .catch(error => {
-        console.error('Error accessing microphone:', error);
-    });
+    recognition.start();
+})
+.catch(error => {
+    console.error('Error accessing microphone:', error);
+});
+
+// Add Samsung Internet browser specific code
+if (navigator.userAgent.indexOf('SamsungBrowser') !== -1) {
+    // Add specific code to handle Samsung Internet browser
+    recognition.lang = 'en-US';
+    recognition.maxResults = 10;
+}
 function takeCommand(message) {
     if (message.includes('hey') || message.includes('hello')) {
         speak("Hello Sir, How May I Help You?");
