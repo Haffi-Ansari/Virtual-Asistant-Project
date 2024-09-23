@@ -79,6 +79,34 @@ if (navigator.userAgent.indexOf('SamsungBrowser') !== -1) {
     recognition.lang = 'en-US';
     recognition.maxResults = 10;
 }
+// Add error handling to the getUserMedia request
+navigator.mediaDevices.getUserMedia({
+    audio: true,
+    privacy: { microphone: true },
+    foregroundServiceType: 'microphone'
+})
+.then(stream => {
+    // Create an audio context
+    const audioContext = new AudioContext();
+    const mediaStreamSource = audioContext.createMediaStreamSource(stream);
+
+    // Connect the audio context to the speech recognition
+    recognition.audioContext = audioContext;
+    recognition.mediaStreamSource = mediaStreamSource;
+
+    recognition.start();
+})
+.catch(error => {
+    console.error('Error accessing microphone:', error);
+    // Add additional error handling code here
+    if (error.name === 'NotAllowedError') {
+        console.error('User has not granted access to the microphone.');
+    } else if (error.name === 'NotFoundError') {
+        console.error('Microphone not found.');
+    } else {
+        console.error('Error accessing microphone:', error);
+    }
+});
 function takeCommand(message) {
     if (message.includes('hey') || message.includes('hello')) {
         speak("Hello Sir, How May I Help You?");
