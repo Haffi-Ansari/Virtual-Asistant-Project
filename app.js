@@ -1,6 +1,10 @@
 const btn = document.querySelector('.talk');
 const content = document.querySelector('.content')
 
+btn.addEventListener('click', () => {
+    content.textContent = "Listening...";
+    recognition.start();
+});
 btn.addEventListener('touchstart', () => {
     content.textContent = "Listening...";
     recognition.start();
@@ -49,12 +53,16 @@ recognition.onresult = (event) => {
     content.textContent = transcript;
     takeCommand(transcript.toLowerCase());
 }
-btn.addEventListener('click', () => {
-    content.textContent = "Listening...";
-    recognition.start();
-});
 navigator.mediaDevices.getUserMedia({ audio: true })
     .then(stream => {
+        // Create an audio context
+        const audioContext = new AudioContext();
+        const mediaStreamSource = audioContext.createMediaStreamSource(stream);
+
+        // Connect the audio context to the speech recognition
+        recognition.audioContext = audioContext;
+        recognition.mediaStreamSource = mediaStreamSource;
+
         recognition.start();
     })
     .catch(error => {
