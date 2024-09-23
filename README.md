@@ -1,2 +1,2 @@
 # Virtual-Asistant-Project
-This is the code for your Virtual-Asistant
+This is the REPO for your Virtual-Asistant
