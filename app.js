@@ -1,6 +1,13 @@
 const btn = document.querySelector('.talk');
 const content = document.querySelector('.content')
 
+btn.addEventListener('touchstart', () => {
+    content.textContent = "Listening...";
+    recognition.start();
+});
+btn.addEventListener('touchend', () => {
+    recognition.stop();
+});
 function speak(text) {
     const text_speak = new SpeechSynthesisUtterance(text);
 
@@ -33,6 +40,9 @@ window.addEventListener('load', () => {
 const speechRecognition = window.speechRecognition || window.webkitSpeechRecognition;
 const recognition = new speechRecognition;
 
+recognition.lang = 'en-US', 'urdu';
+recognition.maxResults = 10;
+
 recognition.onresult = (event) => {
     const currentIndex = event.resultIndex;
     const transcript = event.results[currentIndex][0].transcript;
@@ -42,7 +52,14 @@ recognition.onresult = (event) => {
 btn.addEventListener('click', () => {
     content.textContent = "Listening...";
     recognition.start();
-})
+});
+navigator.mediaDevices.getUserMedia({ audio: true })
+    .then(stream => {
+        recognition.start();
+    })
+    .catch(error => {
+        console.error('Error accessing microphone:', error);
+    });
 function takeCommand(message) {
     if (message.includes('hey') || message.includes('hello')) {
         speak("Hello Sir, How May I Help You?");
@@ -73,7 +90,7 @@ function takeCommand(message) {
         const finalText = "Today's date is " + date;
         speak(finalText);
     } else if (message.includes('calculator')) {
-        window.open('Calculator:EgZjaHJvbWUqEggAEAAYQxiDARixAxiABBiKBTISCAAQABhDGIMBGLEDGIAEGIoFMgYIARBFGDkyDAgCEAAYQxiABBiKBTIMCAMQABhDGIAEGIoFMhIIBBAAGEMYgwEYsQMYgAQYigUyDAgFEAAYQxiABBiKBTIKCAYQABixAxiABDIKCAcQABixAxiABDINCAgQABiDARixAxiABDIKCAkQABixAxiABNIBCDI4MTdqMGo3qAIIsAIB');
+        window.open('Calculator:///');
         const finalText = "Opening Calculator";
         speak(finalText);
     } else {
